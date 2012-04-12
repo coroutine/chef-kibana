@@ -8,17 +8,30 @@ Requirements
 
 Kibana requires a working installation of Elasticsearch and Logstash.
 
-This cookbook depends on `apache2` and `php`.
+This cookbook depends on `apache2` and `php`. It has only been tested on Ubuntu 10.04.
 
 Attributes
 ==========
+This cookbook contains attributes to configure Kibana as well as attributes used to write an apache virtual host config file.
+
+* `node[:kibana][:version]` - The version of Kibana to download (corresponds to a tag on github)
+* `node[:kibana][:checksum]` - The checksum for the downloaded .tar.gz file.
+* `node[:kibana][:install_dir]` - The directory where Kibana will be installed
+* `node[:kibana][:conf]` - A hash of configuration options for Kibana. These matche the options available in Kibana's `config.php` file. See `attributes/default.rb` for more information.
+* `node[:kibana][:apache]` - a hash of configuration options for an apache virtual host config file. See `attributes/default.rb` and the `apache` recipe for more information.
 
 Recipes
 =======
 
+* `default` - Downloads Kibana from Github and extracts it into the directory specified by the `install_dir` attribute. It then writes the `config.php` file based on values contained in the `node[:kibana][:conf]` attribute namespace.
+
+* `apache` - Writes and enables an apache config file based on the values in the `node[:kibana][:apache]` attribute namespace.
+
+
 Usage
 =====
 
+To use this cookbook, you should create a role, override the attributes that you want to change, and then add the role to any nodes on which you want Kibana installed. Keep in mind, that Kibana expects a working installation of elasticsearch (and logstash).
 
 License and Author
 ==================
