@@ -55,7 +55,7 @@ default[:kibana][:apache][:vhost_port]    = "80"
 default[:kibana][:apache][:server_admin]  = "ops@example.com"
 default[:kibana][:apache][:error_log]     = "/var/log/apache2/error.log"
 default[:kibana][:apache][:log_level]     = "warn"
-default[:kibana][:apache][:alias]         = "/kibana/"
+default[:kibana][:apache][:alias]         = "/kibana"
 # Setting `allow_from` will restrict the addresses from which Kibana
 # can be viewed. E.G. setting to "127.0.0.0/255.0.0.0 ::1/128" will 
 # only allow local connections.
