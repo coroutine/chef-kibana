@@ -48,12 +48,11 @@ end
 bash "extract kibana" do
   user  "root"
   cwd   node['kibana']['install_dir']
-  code  %(tar -xf /tmp/kibana-#{node[:kibana][:version]}.tar)
-#  code  <<-EOH
-#  tar -xf /tmp/kibana-#{node[:kibana][:version]}.tar && \
-#  mv kibana-#{node[:kibana][:version]}/* . && \
-#  rmdir kibana-#{node[:kibana][:version]}
-#  EOH
+  code  <<-EOH
+  tar -xf /tmp/kibana-#{node[:kibana][:version]}.tar && \
+  mv #{node[:kibana][:directory_name]}/* . && \
+  rmdir #{node[:kibana][:directory_name]}
+  EOH
   not_if{ File.exists? "#{node[:kibana][:install_dir]}/config.php" }
 end
 
