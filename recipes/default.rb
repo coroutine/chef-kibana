@@ -24,8 +24,8 @@ include_recipe "php::module_curl"
 
 # Set up the installation directory
 directory node['kibana']['install_dir'] do
-  owner         "root"
-  group         "root"
+  owner         "www-data"
+  group         "www-data"
   mode          0755
   action        :create
   recursive     true
@@ -52,6 +52,7 @@ bash "extract kibana" do
   tar -xf /tmp/kibana-#{node[:kibana][:version]}.tar && \
   mv #{node[:kibana][:directory_name]}/* . && \
   rmdir #{node[:kibana][:directory_name]}
+  chown -R www-data:www-data #{node['kibana']['install_dir']}
   EOH
   not_if{ File.exists? "#{node[:kibana][:install_dir]}/config.php" }
 end
@@ -59,8 +60,8 @@ end
 # Write config files
 template "#{node['kibana']['install_dir']}/config.php" do
   source  "config.php.erb"
-  owner   "root"
-  group   "root"
+  owner   "www-data"
+  group   "www-data"
   mode    0755
   action  :create
   variables(
