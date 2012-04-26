@@ -46,6 +46,3 @@ end
 apache_site "kibana" do
   enable true
 end
-apache_site "default" do
-  enable false
-end
