@@ -8,11 +8,13 @@ Requirements
 
 Kibana requires a working installation of Elasticsearch and Logstash.
 
-This cookbook depends on `apache2` and `php`. It has only been tested on Ubuntu 10.04.
+This cookbook depends on `apache2` and `php`. It has only been tested on 
+Ubuntu 10.04.
 
 Attributes
 ==========
-This cookbook contains attributes to configure Kibana as well as attributes used to write an apache virtual host config file.
+This cookbook contains attributes to configure Kibana as well as attributes 
+used to write an apache virtual host config file.
 
 * `node[:kibana][:version]` - The version of Kibana to download (corresponds to a tag on github)
 * `node[:kibana][:checksum]` - The checksum for the downloaded .tar.gz file.
@@ -31,7 +33,36 @@ Recipes
 Usage
 =====
 
-To use this cookbook, you should create a role, override the attributes that you want to change, and then add the role to any nodes on which you want Kibana installed. Keep in mind, that Kibana expects a working installation of elasticsearch (and logstash).
+To use this cookbook, you should create a role, override the attributes that you
+want to change, and then add the role to any nodes on which you want Kibana 
+installed. Keep in mind, that Kibana expects a working installation of
+elasticsearch (and logstash).
+
+*NOTE*: If you run kibana on a port other than port 80, you'll need to configure
+your webserver so that it listens on that port. If you're using the apache
+cookbook, simply override the `listen_ports` attribute; e.g. if you wanted to 
+run kibana on port 8000, you might create a role similar to the following:
+
+    name "kibana"
+    description "Sample role to configure Kibana"
+
+    run_list(
+      "recipe[apache2::default]",
+      "recipe[kibana::default]",
+      "recipe[kibana::apache]",
+    )
+
+    override_attributes(
+      "apache" => {
+        "listen_ports" => [ "80","8000" ]
+      },
+      "kibana" => {
+        "apache" => {
+          "server_admin" => "admin@example.com
+          "vhost_port"   => "8000",
+        }   
+      }
+    )
 
 License and Author
 ==================
