@@ -30,18 +30,6 @@ template "/etc/apache2/sites-available/kibana" do
   notifies :reload, resources(:service => "apache2"), :delayed
 end
 
-# Make sure apache listens on the specified port
-bash "update apache ports.conf" do
-  user  "root"
-  cwd   "/etc/apache2"
-  code <<-EOH
-    echo "" >> ports.conf
-    echo "Listen #{node[:kibana][:apache][:vhost_port]}" >> ports.conf
-    echo "NameVirtualHost *:#{node[:kibana][:apache][:vhost_port]}" >> ports.conf
-  EOH
-  not_if "grep 'Listen #{node[:kibana][:apache][:vhost_port]}' ports.conf"
-end
-
 # Enable it.
 apache_site "kibana" do
   enable true
