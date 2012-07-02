@@ -3,7 +3,11 @@
     ErrorLog <%= @conf['error_log'] %>
     LogLevel <%= @conf['log_level'] %>
 
+    <% if !@conf['alias'] || @conf['alias'] == '/' -%>
+    DocumentRoot <%= node['kibana']['install_dir'] %>
+    <% else -%>
     Alias <%= @conf['alias'] -%> "<%= node['kibana']['install_dir'] -%>"
+    <% end -%>
     <Directory "<%= node['kibana']['install_dir'] -%>">
         Options Indexes MultiViews FollowSymLinks
         AllowOverride None
